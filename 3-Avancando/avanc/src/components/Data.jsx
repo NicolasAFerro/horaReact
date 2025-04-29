@@ -20,7 +20,9 @@ function Data() {
       <button
         onClick={() => setNumber(number % 2 === 0 ? 17 : 20)}
         style={{ backgroundColor: "orange" }}
-      ></button>
+      >
+        Clique aqui para trocar
+      </button>
     </div>
   );
 }
