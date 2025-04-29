@@ -446,3 +446,22 @@ export default ExecuteFunction;
 
 **State Lift**  
 do componente filho para o pai
+
+## CSS
+
+Para não vazar o css para os outros componentes
+faz um arquivo MyComponent.module.css e importa ele como objeto
+
+```
+import React from 'react'
+import classes from "./Title.module.css"
+function Title() {
+  return (
+    <div><h1 className={classes.title}>Esse titulo está scroped</h1></div>
+  )
+}
+
+export default Title
+```
+
+## IMC
