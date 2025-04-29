@@ -465,3 +465,21 @@ export default Title
 ```
 
 ## IMC
+
+Para fazer o Botão posso passar um evento qualquer como argumento;
+Dai aquele componente pode executar o evento "global"
+
+- capturar um evento e dar um set na dom
+
+```
+<label htmlFor="weight">Peso</label>
+                <input type="text" name='weight' id='weight' placeholder='Exemplo 70,5'
+                onChange={(e)=>setWeight(e.target.value)}
+                value={weight} />
+```
+
+- passar evento como argumento; no caso action é o nome do argumento do tipo evento
+
+```
+ <Button id="clear-btn" action={clearForm} text="Limpar"/>
+```

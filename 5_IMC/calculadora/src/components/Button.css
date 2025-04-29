@@ -1,0 +1,20 @@
+button{ 
+    text-transform: uppercase; 
+    padding: 1rem 1.5rem; 
+    background-color: #f44236; 
+    border: none; 
+    cursor: pointer; 
+    opacity: .9;
+    flex:1; 
+    color: white; 
+    text-decoration: none;
+} 
+button:hover{ 
+    opacity: 1;
+}
+#clear-btn{ 
+    background-color: #444;
+}
+#imc-form{ 
+    margin-top: 1rem;
+}
