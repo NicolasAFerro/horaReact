@@ -1,5 +1,7 @@
 # React
 
+npm create vite@latest
+
 ## Introdução
 
 É baseado em SPA (single page application), no qual tem uma única página que vai mudando seu conteúdo através de eventos. Mudança de estados da página.
@@ -515,6 +517,8 @@ type MyFormProps = {
 function MyForm({userName , userEmail}:MyFormProps) {
   const [name,setName]=useState(userName);
   const [email,setEmail]= useState(userEmail);
+  const [bio, setBio]=useState("");
+  const [role, setRole]=useState("");
 
  function handleName (e: React.ChangeEvent<HTMLInputElement>) {
     setName(e.target.value);
@@ -522,8 +526,17 @@ function MyForm({userName , userEmail}:MyFormProps) {
   //essa abordagem é possivel usar This, é uma melhor boa pratica
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
     e.preventDefault();
+    //ValidaçÃO
+    //Envio
+    console.log(bio,name,email,role);
+    //Limpando o Formulário
+    setName("");
+    setEmail("");
+    setBio("");
+    setRole("");
 
   }
+
   return (
     <div>
         <form onSubmit={handleSubmit}>
@@ -541,6 +554,18 @@ function MyForm({userName , userEmail}:MyFormProps) {
             /* {Controled Inputs} */
             value={email || ""}
             />
+            </label>
+              <label><span>Bio:</span>
+              <textarea name="bio" placeholder='Descricao do usuarios' onChange={(e)=>{setBio(e.target.value)}}
+                value={bio || ""}></textarea>
+            </label>
+            <label>
+              <span>Função</span>
+              <select name="role" onChange={(e)=>{setRole(e.target.value)}} value={role}>
+                <option value="user">Usuário</option>
+                <option value="adm">Administrador</option>
+                <option value="editor">Editor</option>
+              </select>
             </label>
             <input type="submit" />
         </form>
