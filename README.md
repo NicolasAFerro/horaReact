@@ -483,3 +483,73 @@ Dai aquele componente pode executar o evento "global"
 ```
  <Button id="clear-btn" action={clearForm} text="Limpar"/>
 ```
+
+## Formulários
+
+**o Envio deve ser pelo JS e Não pelo action**
+Uma abordagem possivel se ficar muito handle padrão:
+
+```
+const handle = {
+  nameChange: (e) => setName(e.target.value),
+  emailChange: (e) => setEmail(e.target.value),
+  submit: (e) => {
+    e.preventDefault();
+    console.log(name, email);
+  },
+};
+```
+
+**Edição:** Controlled Inputs
+Para fazer um polimorfismo em tempo de Execução é possivel atribuir o value do html com as possiveis props que venham de venham no useState. Mas se atentar que devemos colocar um "" casos ela não exista.
+
+```
+import React from 'react'
+import './MyForm.css'
+import { useState } from 'react'
+
+type MyFormProps = {
+  userName: string;
+  userEmail: string;
+};
+function MyForm({userName , userEmail}:MyFormProps) {
+  const [name,setName]=useState(userName);
+  const [email,setEmail]= useState(userEmail);
+
+ function handleName (e: React.ChangeEvent<HTMLInputElement>) {
+    setName(e.target.value);
+  }
+  //essa abordagem é possivel usar This, é uma melhor boa pratica
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
+    e.preventDefault();
+
+  }
+  return (
+    <div>
+        <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="name">Nome: </label>
+                <input type="text" name='name' placeholder='Digite o seu nome' onChange={handleName}
+                /* {controlled Inputs} */
+                value={name || ""}/>
+            </div>
+            {/* {label envolvendo o input} */}
+            <label htmlFor="">
+              <span>Email:</span>
+              {/* {da para colocar o set Já no input} */}
+            <input type="email" name='email' onChange={(e)=>{setEmail(e.target.value)}}
+            /* {Controled Inputs} */
+            value={email || ""}
+            />
+            </label>
+            <input type="submit" />
+        </form>
+
+
+    </div>
+  )
+}
+
+export default MyForm
+
+```
