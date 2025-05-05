@@ -1,7 +1,11 @@
 import React from "react";
 
 function ReviewForm() {
-  return <div>ReviewForm</div>;
+  return (
+    <div>
+      <h2>Review Form</h2>
+    </div>
+  );
 }
 
 export default ReviewForm;

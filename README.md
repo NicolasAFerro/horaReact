@@ -502,7 +502,8 @@ const handle = {
 };
 ```
 
-**Edição:** Controlled Inputs
+**Edição:** Controlled Inputs - 6- pasta 6
+
 Para fazer um polimorfismo em tempo de Execução é possivel atribuir o value do html com as possiveis props que venham de venham no useState. Mas se atentar que devemos colocar um "" casos ela não exista.
 
 ```
