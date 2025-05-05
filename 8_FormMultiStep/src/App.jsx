@@ -5,18 +5,41 @@ import ReviewForm from "./Components/ReviewForm";
 import Thanks from "./Components/Thanks";
 import { useState } from "react";
 import Steps from "./Components/Steps";
+import { BsEmojiLaughing } from "react-icons/bs";
 
+const formTemplate={ 
+  name:"", 
+  email:"", 
+  review:"", 
+  comment:"",
+}
 function App() {
-  const formComponents = [<UserForm />, <ReviewForm />, <Thanks />];
+  const [data,setData]=useState(formTemplate);
+  
   const [indexComponent, setIndexComponent] = useState(0);
 
-  //problema da variavel contadora do react. Ele Armazena na fila dele para depois processar;
-  //sempre que um elemento é rendereizado, o index volta para 0; pois
-  //"Começa a função de novo"
-  function handleFormStep(direction) {
-    if (direction === "next" && indexComponent < formComponents.length - 1) {
+  const updateFieldHandler=(key,value)=>{ 
+    setData((prev)=>{ 
+      return {...prev,[key]:value}
+    })
+  }
+  const formComponents = [
+    <UserForm data={data} updateFieldHandler={updateFieldHandler}/>,
+    <ReviewForm data={data} updateFieldHandler={updateFieldHandler}/>,
+    <Thanks data={data}/>
+  ];
+  // Avança para o próximo passo ao submeter o formulário
+  function handleSubmit(e) {
+    e.preventDefault(); // evita o reload da página
+
+    // Somente avança se não for o último passo
+    if (indexComponent < formComponents.length - 1) {
       setIndexComponent((prev) => prev + 1);
-    } else if (direction === "previous" && indexComponent > 0) {
+    }
+  }
+
+  function handleBack() {
+    if (indexComponent > 0) {
       setIndexComponent((prev) => prev - 1);
     }
   }
@@ -30,9 +53,10 @@ function App() {
           avaliar o produto.
         </p>
       </div>
-      <div className="div form-container">
+      <div className="form-container">
         <Steps currentStep={indexComponent} />
-        <form>
+
+        <form onSubmit={handleSubmit}>
           <div className="inputs-container">
             {formComponents[indexComponent]}
           </div>
@@ -41,21 +65,23 @@ function App() {
             <button
               type="button"
               id="btnPrevious"
-              onClick={() => handleFormStep("previous")}
+              onClick={handleBack}
               disabled={indexComponent === 0}
             >
               <span>Voltar</span>
               <GrFormPrevious />
             </button>
-            <button
-              type="button"
-              id="btnNext"
-              onClick={() => handleFormStep("next")}
-              disabled={indexComponent === formComponents.length - 1}
-            >
-              <span>Avançar</span>
-              <GrFormNext />
-            </button>
+
+            {indexComponent < formComponents.length - 1 ? (
+              <button type="submit" id="btnNext">
+                <span>Avançar</span>
+                <GrFormNext />
+              </button>
+            ) : (
+              <button type="button" disabled>
+                Finalizado
+              </button>
+            )}
           </div>
         </form>
       </div>
