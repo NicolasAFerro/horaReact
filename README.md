@@ -2,6 +2,8 @@
 
 npm create vite@latest
 
+npm install json-server
+
 ## Introdução
 
 É baseado em SPA (single page application), no qual tem uma única página que vai mudando seu conteúdo através de eventos. Mudança de estados da página.
@@ -154,13 +156,15 @@ function App() {
 export default App;
 ```
 
-**HOOKS**
+## **HOOKS**
 
 - recursos do react que tem diversas funções
 - precisam ser importados
 - sempre começam com a palavra **use**
 - useState;useEffect; useCallback
 - Podemos Criar os nossos
+
+- Sempre estar no topo da função; pois é como se o react criasse uma função e jogasse tudo como argumento (aquela fila dele), estão não pode usar hook dentro de if, que pode dar uma bugada
 
 **useState**
 
@@ -185,9 +189,18 @@ const [number, setNumber] = useState(15);
   return(...)
 
 }
+```
 
+posso colcoar uma lógica no ser também
 
+```
+function App(){
+  const [number, setNumber]=useState(()=>{
+    return 1+1 //ou qualquer lógica aqui
+  })
 
+  return <div><div/>
+}
 
 ```
 
@@ -578,4 +591,52 @@ function MyForm({userName , userEmail}:MyFormProps) {
 
 export default MyForm
 
+```
+
+## Requisições HTTP
+
+**UseEffect**
+Permite executar efeitos colaterais, como requisições, timers, manipulação do DOM, etc.
+
+```
+import { useEffect } from 'react';
+
+useEffect(() => {
+  console.log('Rodou o efeito!');
+}, []);
+```
+
+O segundo parâmetro ([]) é a lista de dependências:
+[] = roda uma vez só (componentDidMount); quando é montado em tela;
+[variavel] = roda toda vez que variavel mudar
+Sem o segundo parâmetro = roda toda renderização
+Ele basicamente diz quando que o useEffect vai rodar
+
+## **Comportamento de Ponteiro do useEffect**
+
+```
+ const handleSubmit = async (e)=>{
+    e.preventDefault();
+    const product={
+      name,
+      price,
+    }
+    ///post
+    const res = await fetch(url,{
+      method:'POST',
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify(product),
+    })
+    //3 carregamento dinamico sem ter que fazer uma nova requisição:
+    const addedProduct= await res.json();
+    //oq acontece aqui: Eu não posso simplesmente dar um push do final da lista.
+    //pois a lista ainda está apontando para o mesmo lugar na memória, ai o react
+    //não "ouve"/"enxerga" a mudança para reenderizar o componente. Com isso tem que usar mais
+    //um espacinho em memória para criar uma nova lista e ele enxergar a mudança  e retorna
+    // o novo ponteiro para o setProducts. Acho meio merda.
+    // o React tem um garbageCollector que faz o free/dispose do array antigo.
+    setProducts((prev)=>[...prev,addedProduct])
+  }
 ```
