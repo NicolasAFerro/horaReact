@@ -643,3 +643,10 @@ Ele basicamente diz quando que o useEffect vai rodar
 
 **Estado de loading**
 é basicamente um novo estado exportado
+ 
+
+
+
+ ## REACT ROUTER
+ - Cada rota é uma página 
+ - 
