@@ -643,10 +643,47 @@ Ele basicamente diz quando que o useEffect vai rodar
 
 **Estado de loading**
 é basicamente um novo estado exportado
- 
 
+## REACT ROUTER
 
+- Cada rota é uma página
+- npm install json-server react-router-dom
+- npm install json-server@0.17.0
 
- ## REACT ROUTER
- - Cada rota é uma página 
- - 
+**configuração**
+precisa importar os componetes createBrowserRouter, RouterProvider,Route
+
+- precisa instalar o react-router-dom;
+- ir no main.jsx;
+- importa os component;
+- criar uma array de obj com seus paths
+- substituir o <App/> por <RouterProvider />
+- passar seu array como prop
+
+```
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.jsx'
+
+import {createBrowserRouter, RouterProvider, Route} from 'react-router-dom'
+import Contact from './routes/Contact.jsx'
+
+const router = createBrowserRouter([
+ {
+   path:"/",
+   element:<App />
+ },
+ {
+   path:"contact",
+   element:<Contact />
+ }
+])
+
+createRoot(document.getElementById('root')).render(
+ <StrictMode>
+  {/*  <App /> */}
+  <RouterProvider router={router}/>
+ </StrictMode>,
+)
+```
