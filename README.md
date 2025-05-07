@@ -640,3 +640,6 @@ Ele basicamente diz quando que o useEffect vai rodar
     setProducts((prev)=>[...prev,addedProduct])
   }
 ```
+
+**Estado de loading**
+é basicamente um novo estado exportado

@@ -4,7 +4,8 @@ import { useState,useEffect} from 'react'
 import { useFetch } from './hooks/useFetch';
 function App() {
   const [products,setProducts]=useState([]); 
-  const url="http://localhost:3000/products";
+  //const url="http://localhost:3000/products"; 
+  const url="";
 
 /*   async function getData () { 
     const res= await fetch(url);
@@ -19,7 +20,7 @@ function App() {
   },[]) */
 
   //4 custom Hook
-  const {data: items,httpConfig} = useFetch(url);
+  const {data: items,httpConfig,loading,error} = useFetch(url);
 
 
 
@@ -57,11 +58,18 @@ function App() {
 
     //5 refatorando post 
     httpConfig(product,"POST");
+    setName(""); 
+    setPrice("");
   }
 
   return (
    <div className='app'>
-    <h1>teste</h1>
+    <h1>HTTP em React</h1> 
+    {/* 6-loading */}  
+    {loading && <p>Carregando</p>}
+    {/* 7-error */} 
+    {error && <p>{error}</p>}
+
     <ul>
      {/*  {products.map((product) => (
         <li key={product.id}>
@@ -75,7 +83,7 @@ function App() {
       ))}
     </ul>
     <div className="add-product">
-      <form onSubmit={handleSubmit}> 
+      <form onSubmit={handleSubmit} id='form-product'> 
         <label htmlFor="">
           <span>Nome</span>
           <input type="text" value={name} onChange={(e)=>{setName(e.target.value)}}/>
@@ -84,7 +92,10 @@ function App() {
           <span>Preço</span>
           <input type="text" value={price} onChange={(e)=>{setPrice(e.target.value)}}/>
         </label>
-        <input type="submit" value="enviar" />
+        {/* <input type="submit" value="enviar" /> */} 
+        {/* loading post */} 
+        {loading && <input type="submit" disabled value="Aguarde" />} 
+        {!loading && <input type="submit"  value="enviar" />}
       </form>
     </div>
 
