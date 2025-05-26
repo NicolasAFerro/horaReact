@@ -2,6 +2,7 @@
 
 npm create vite@latest
 
+para react router:
 npm install json-server
 
 ## Introdução
@@ -686,4 +687,179 @@ createRoot(document.getElementById('root')).render(
   <RouterProvider router={router}/>
  </StrictMode>,
 )
+```
+
+**Criando o componente Base**
+-define que o componente tenha a estrutura, ai reaproveita em tudo
+
+- as configurações de páginas devem ser feitas da prop Chidren em main.jsx
+
+```
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <ErrorPage />,
+    // componente base
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        path: 'contact',
+        element: <Contact />,
+        errorElement: <ErrorPage />,
+      },
+    ],
+  },
+]);
+```
+
+- e no app.jsx
+
+```
+import { Outlet } from 'react-router-dom';
+function App() {
+  return (
+    <div className='App'>
+      <p>NavBAR</p>
+      <Outlet />
+      <p>footer</p>
+    </div>
+  );
+}
+```
+
+**Links entre páginas**
+usar o componente <LINK/> presente na biblioteca do react dom, que é basicamente
+uma Tag <a>
+**Rota dinâmica**
+
+- Carregar os produtos de forma individual, que as caracteristicas mudam
+  path=>product/:id
+- toda rota dinâmica precisa estar declarada também no main,jsx
+
+1- configura a roda no main
+
+```
+//rota dinamica
+      {
+        path: 'products/:id',
+        element: <Product />,
+        errorElement: <ErrorPage />,
+      },
+```
+
+2- cria esse componente. Ver documentação react router dom;
+use Paramns
+
+```
+import React from 'react';
+
+import { useFetch } from '../hooks/useFetch';
+import { useParams } from 'react-router-dom';
+
+const Product = () => {
+  const { id } = useParams();
+  const url = 'http://localhost:3000/products/' + id;
+  const { data: product } = useFetch(url);
+
+  if (!product) return <p>Carregando...</p>;
+  return (
+    <div>
+      <p>Id do produto:{product.id}</p>
+      <div>
+        <h1>nome: {product.name}</h1>
+        <h1>nome: {product.price}</h1>
+      </div>
+    </div>
+  );
+};
+
+export default Product;
+
+```
+
+3- chama no home
+
+```
+<h1>Home</h1>
+      <ul className='products'>
+        {itens &&
+          itens.map(item => (
+            <li key={item.id}>
+              <h2>{item.name}</h2>
+              <p>{item.price}</p>
+              <Link to={`/products/${item.id}`}>Detalhes</Link>
+            </li>
+          ))}
+      </ul>
+```
+
+- Nested Routes
+
+```
+
+//nested router
+      {
+        path: 'products/:id/info',
+        element: <Info />,
+        errorElement: <ErrorPage />,
+      },
+```
+
+- Para deixar o navBAR
+
+```
+  const NavBar = () => {
+  return (
+  <div>
+  {/\* <Link to='/'>Home</Link>
+
+        <Link to='/contact'>Contatos</Link> */}
+        <NavLink to='/' className={({ isActive }) => (isActive ? 'active' : '')}>
+          Home
+        </NavLink>
+        <NavLink to='/contact'>Contatos</NavLink>
+      </div>
+
+  );
+  };
+```
+
+- **SearchParamns**
+  1- faz o componente
+  2- faz a rota no main
+  3- cria a route
+
+```
+import React from 'react';
+
+import { useFetch } from '../hooks/useFetch';
+import { Link, useSearchParams } from 'react-router-dom';
+const Search = () => {
+  const [searchParamns] = useSearchParams();
+  const url = 'http://localhost:3000/products?' + searchParamns;
+
+  const { data: itens } = useFetch(url);
+  return (
+    <div>
+      <h1>Resultados da pesquisa</h1>
+      <ul className='products'>
+        {itens &&
+          itens.map(item => (
+            <li key={item.id}>
+              <h2>{item.name}</h2>
+              <p>{item.price}</p>
+              <Link to={`/products/${item.id}`}>Detalhes</Link>
+            </li>
+          ))}
+      </ul>
+    </div>
+  );
+};
+
+export default Search;
 ```
