@@ -863,3 +863,81 @@ const Search = () => {
 
 export default Search;
 ```
+
+## REACT CONTEXT
+
+é uma forma de armazenar uma variavel global da aplicação.
+compartilhando um estado de logado por exemplo.
+Com isso, minha classe não precisa receber parametros, é só acessar
+diretamente a variavel, como se fosse um injeçãod e dependencia/singleton/associado
+
+1° cria uma pasta context e cria um contexto:
+
+```
+import { createContext } from 'react'; //importa do react
+
+export const QuizContext = createContext(); //instancia o contexto
+
+//injeção de dependencia
+//posso escolher todos os childrens ou componentes especificos
+export const QuizProvider = ({ children }) => {
+  const value = { name: 'quiz' };
+  return <QuizContext.Provider value={value}>{children}</QuizContext.Provider>;
+};
+
+```
+
+2° import no main e encapsula oq tu vai querer que acesse,
+neste caso é global
+
+```
+import { QuizProvider } from '../context/quiz.jsx';
+createRoot(document.getElementById('root')).render(
+  <StrictMode>
+    <QuizProvider>
+      <App />
+    </QuizProvider>
+  </StrictMode>,
+);
+```
+
+3° acessando no componete que tu quer:
+
+- tem que importar o contexto
+- importar o useContext que acessa ele
+
+```
+import { useContext } from 'react';
+import { QuizContext } from '../context/quiz';
+
+export const Welcome = () => {
+  const quizState = useContext(QuizContext);
+  console.log(quizState);
+  return (
+    <div id='welcome'>
+      <h2>Bem vindo</h2>
+      <p>Clique no botão abaixo apra iniciar:</p>
+      <button>Iniciar</button>
+      <img src={Quiz} alt='inicio do quiz' />
+    </div>
+  );
+};
+```
+
+**UseReducer**
+
+é como vou alterar o estado e/ou contexto da aplicação;
+useReducer é um hook usado para gerenciar estado complexo em componentes React, especialmente quando:
+Há vários tipos de ações que afetam o estado.
+O estado tem múltiplas propriedades.
+Ou quando você quer manter a lógica de atualização separada.
+Ele é uma alternativa ao useState, inspirada no padrão Reducer do Redux (e no conceito de State Machine).
+
+```
+const [estado, dispatch] = useReducer(reducer, estadoInicial);
+```
+
+- estado: o estado atual.
+- dispatch: função para enviar ações.
+- reducer: função que recebe o estado atual e uma ação, e retorna o novo estado.
+- estadoInicial: o valor inicial do estado.
